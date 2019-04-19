@@ -1,0 +1,21 @@
+$ git remote add heroku https://git.heroku.com/cycbookshop.git
+
+https://cycheng1688.github.io/bookclient/
+ng build --prod --output-path docs --base-href /bookclient/
+ng build --prod --output-path docs --base-href /bookclient2/
+git remote -v
+origin  https://github.com/cycheng1688/bookclient.git (fetch)
+origin  https://github.com/cycheng1688/bookclient.git (push)
+git add .
+git commit -m ''
+git push origin master
+https://angular.io/guide/deployment
+
+ng build --prod --base-href "https://cycheng1688.github.io/bookclient/"
+
+git push origin :gh-pages
+git push origin gh-pages
+
+Live Web API
+https://cycbookshop.herokuapp.com/
+https://cycbookmongo.herokuapp.com/
