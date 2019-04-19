@@ -8,12 +8,11 @@ import {Router} from "@angular/router";
     <input #newSearch
       (keyup.enter)="addSearch(newSearch.value)"
       (blur)="addSearch(newSearch.value); newSearch.value='' ">
-
     <button (click)="addSearch(newSearch.value)">Search</button>
 <ul *ngIf="books">
 <li *ngFor="let book of books; index as i">
 <h3>Title: {{ book.title }} <button (click)="addFavHandler(i, books,1)">  Add to Favourites</button></h3>
-<h5>Author: {{ book.authors[0] }}</h5>
+<h3>Author: {{ book.authors[0] }}</h3>
 <p><strong>Description:</strong>{{ book.description}} </p>
 </li>
 </ul>
@@ -47,7 +46,7 @@ addFavHandler(i:number,book:Object,choice:number)
      //this.books = JSON.stringify(data);	//error mapping as object return not array
       
 	  var mess =JSON.stringify(data)
-	  console.log(mess)
+	 
 	  if (mess.includes('duplicate'))
 	      this.clickMessage ='Cannot have duplicate Favourite!'
 	  else
