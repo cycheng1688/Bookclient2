@@ -14,9 +14,9 @@ export class LogoutComponent implements OnInit {
   
 if(this.session&&this.session.getItem("username")!=undefined)
      {	
-	  console.log(this.session.getItem("success"))
-	  console.log(this.session.getItem("username"))
-	  console.log('logging out')
+	 // console.log(this.session.getItem("success"))
+	 // console.log(this.session.getItem("username"))
+	 // console.log('logging out')
 	  this.session.clear()
       
 	  this.router.navigate(['/login'])

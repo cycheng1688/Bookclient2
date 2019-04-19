@@ -70,8 +70,8 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 {   
       var Fav = 'https://cors-anywhere.herokuapp.com/https://cycbookmongo.herokuapp.com/favourites';
 	 let authorizationData = 'Basic '+  btoa(`${username}:${password}`);
-	   console.log(`${username}:${password}`+' '+choice);
-	   console.log(authorizationData);
+	//   console.log(`${username}:${password}`+' '+choice);
+	 //  console.log(authorizationData);
 	
 
 	const httpOptions = new  HttpHeaders()
@@ -102,8 +102,15 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 	}
 	
 	if (choice==2) //edit Fav
-	   return this.http.put(Fav,{headers:httpOptions})
-	
+	 {Fav=Fav +`/${book[i].favlist[0]._id}`
+	 console.log('Fav'+Fav)
+	   return this.http.put(Fav,{            
+			   'title':`${book[i].title}`,
+			   'authors':`${book[i].authors}`,
+			   'description':`${book[i].description}`,
+			   'review':`${book[i].review}`
+	         },{headers:httpOptions})
+	 }
 	if (choice==3) //del Fav
 	  {Fav=Fav +`/${book[i].favlist[0]._id}`
 	   console.log('delfav '+ Fav)

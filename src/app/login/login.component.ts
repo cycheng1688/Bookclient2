@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
        this.data.login_getFav(this.messageForm2.controls.uname.value,this.messageForm2.controls.upass.value, 3)
 	   .subscribe(data=>{
            this.message = data ;			
-       console.log(this.message)
+     //  console.log(this.message)
        this.success = true;
 	   this.Newuseradded = true;
 	   this.session.setItem("success", `${this.success}`);
@@ -77,9 +77,9 @@ export class LoginComponent implements OnInit {
 	   this.session.setItem("username", `${this.messageForm.controls.name.value}`);
 	   this.session.setItem("password", `${this.messageForm.controls.password.value}`);
 	  window.alert( 'You can now navigate your Favourites')
-	  console.log(this.session.getItem("success"))
-	  console.log(this.session.getItem("username"))
-	  console.log(this.session.getItem("password"))  
+	//  console.log(this.session.getItem("success"))
+	//  console.log(this.session.getItem("username"))
+	 // console.log(this.session.getItem("password"))  
 	   this.router.navigate(['/'])
 	 
 	   
