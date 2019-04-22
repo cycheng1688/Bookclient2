@@ -15,6 +15,13 @@ import { MySessionService} from '../session-storage.service';
 <p ><textarea #comment 
 (keyup.enter)="editFavHandler(i,books.favourites,comment.value)"
 rows="4" cols="60">{{book.favlist[0].review}}</textarea> <button align ="middle"  (click)="editFavHandler(i,books.favourites,comment.value)">Add or Edit Review</button></p>
+<p><strong>Star:</strong>{{  book.favlist[0].star}}      Rate this book <select>
+  <option value=1>1</option>
+  <option value=2>2</option>
+  <option value=3>3</option>
+  <option value=4>4</option>
+  <option value=5>5</option>
+</select> </p> 
 </li>
 </ul>
   
@@ -22,7 +29,7 @@ rows="4" cols="60">{{book.favlist[0].review}}</textarea> <button align ="middle"
 })
 
     
-	
+
 	
 	
 export class FavoriteComponent implements OnInit {
