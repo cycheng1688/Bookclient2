@@ -66,7 +66,7 @@ constructor(private http: HttpClient) { }
 	
 	} // end login_getFav
 
-addFav(username:string, password:string,i:number,book:Object,choice:number) //1:add Fav, 2:edit 3:del
+addFav(username:string, password:string,i:number,book:Object,choice:number) //1:add Fav, 2:edit 3:del, 4:rate star
 {   
       var Fav = 'https://cors-anywhere.herokuapp.com/https://cycbookmongo.herokuapp.com/favourites';
 	 let authorizationData = 'Basic '+  btoa(`${username}:${password}`);
@@ -108,14 +108,24 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 			   'title':`${book[i].title}`,
 			   'authors':`${book[i].authors}`,
 			   'description':`${book[i].description}`,
-			   'review':`${book[i].review}`
+			   'review':`${book[i].review}`,
 	         },{headers:httpOptions})
 	 }
 	if (choice==3) //del Fav
 	  {Fav=Fav +`/${book[i].favlist[0]._id}`
 	   console.log('delfav '+ Fav)
-	   return this.http.delete(Fav,{headers:httpOptions})}
-     
+	   return this.http.delete(Fav,{headers:httpOptions})
+	   }
+     if (choice==4) //edit Fav
+	 {Fav=Fav +`/${book[i].favlist[0]._id}`
+	 console.log('Fav'+Fav)
+	   return this.http.put(Fav,{            
+			   'title':`${book[i].title}`,
+			   'authors':`${book[i].authors}`,
+			   'description':`${book[i].description}`,
+			    'star':`${book[i].star}`
+	         },{headers:httpOptions})
+	 }
   }// end addFav
 
  getBooks(word:string) {

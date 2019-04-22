@@ -14,8 +14,8 @@ import { MySessionService} from '../session-storage.service';
 <p><strong>Description:</strong> {{ book.favlist[0].description}} </p>
 <p ><textarea #comment 
 (keyup.enter)="editFavHandler(i,books.favourites,comment.value)"
-rows="4" cols="60">{{book.favlist[0].review}}</textarea> <button align ="middle"  (click)="editFavHandler(i,books.favourites,comment.value)">Add or Edit Review</button></p>
-<p><strong>Star:</strong>{{  book.favlist[0].star}}      Rate this book <select>
+rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle"  (click)="editFavHandler(i,books.favourites,comment.value)">Add or Edit Review</button></p>
+<p><strong>Star:  </strong>( {{  book.favlist[0].star}} )  <strong>  Rate this book </strong><select (change)="valueChanged(i,books.favourites,$event.target.value)">
   <option value=1>1</option>
   <option value=2>2</option>
   <option value=3>3</option>
@@ -97,6 +97,29 @@ clickMessage = '';
 	
 	 this.data.addFav(`${a}`,`${b}`, id, bookfav,2).subscribe(data=>{
 		this.clickMessage = 'Comments received! Thank you';
+		window.alert( this.clickMessage)
+		this.ngOnInit()
+	})}
+  else {
+         this.clickMessage = `Need to login first!  Book with title: ${book[i].favlist[0].title} is pressed!`;
+         window.alert( this.clickMessage)
+	    this.ngOnInit()
+	}
+   }
+   
+   valueChanged(i:number,book:Object,value: any) {
+        console.log('Selection Changed: ' + value);
+	if(this.session.getItem("username")!=undefined)
+	{let a=this.session.getItem("username")
+	 let b=this.session.getItem("password")
+	 let id =i
+	 let bookfav=book
+	  
+	  bookfav[i].star = value
+	// console.log('received txt '+receivedTxt)
+	
+	 this.data.addFav(`${a}`,`${b}`, id, bookfav,4).subscribe(data=>{
+		this.clickMessage = 'Rate received! Thank you';
 		window.alert( this.clickMessage)
 		this.ngOnInit()
 	})}
