@@ -10,18 +10,18 @@ import { MySessionService} from '../session-storage.service';
 <li *ngFor="let book of books.favourites; index as i">
 
 <h3>Title: {{ book.favlist[0].title }}  <button (click)="delFavHandler(i,books.favourites)">  Delete</button></h3>
-<h5>Authors: {{book.favlist[0].authors[0] }}</h5>
+<h4>Authors: {{book.favlist[0].authors[0] }}</h4>
 <p><strong>Description:</strong> {{ book.favlist[0].description}} </p>
 <p ><textarea #comment 
 (keyup.enter)="editFavHandler(i,books.favourites,comment.value)"
 rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle"  (click)="editFavHandler(i,books.favourites,comment.value)">Add or Edit Review</button></p>
-<p><strong>Star:  </strong>( {{  book.favlist[0].star}} )  <strong>  Rate this book </strong><select (change)="valueChanged(i,books.favourites,$event.target.value)">
+<p><strong>Your rating:  </strong>( {{  book.favlist[0].star}} ) <strong>  Rate this book  </strong><select (change)="valueChanged(i,books.favourites,$event.target.value)">
   <option value=1>1</option>
   <option value=2>2</option>
   <option value=3>3</option>
   <option value=4>4</option>
   <option value=5>5</option>
-</select> </p> 
+</select> <strong> Avg rating from all readers:</strong> {{getAvg(i,books.favourites)}}</p> 
 </li>
 </ul>
   
@@ -62,7 +62,8 @@ clickMessage = '';
 		this.clickMessage = `Sorry! Need to login first! `;
 		window.alert( this.clickMessage)
 	}
-   }
+	
+   } //end  ngOnInit
   
 	delFavHandler(i:number,book:Object,choice:number)
 	{if(this.session.getItem("username")!=undefined)
@@ -106,6 +107,29 @@ clickMessage = '';
 	    this.ngOnInit()
 	}
    }
+   
+   getAvg(i:number,book:Object)
+   {if(this.session.getItem("username")!=undefined)
+	{let a=this.session.getItem("username")
+	 let b=this.session.getItem("password")
+	 let id =i
+	 let bookfav=book
+	 console.log('i m in getAvg')
+   this.data.addFav(`${a}`,`${b}`, id, bookfav,5).subscribe(data=>{
+		//this.clickMessage = 'Rate received! Thank you';
+		//window.alert( this.clickMessage)
+		//this.ngOnInit()
+   console.log(data)
+
+	
+	})}
+  else {
+        // this.clickMessage = `Need to login first!  Book with title: ${book[i].favlist[0].title} is pressed!`;
+        // window.alert( this.clickMessage)
+	    //this.ngOnInit()
+	}
+   
+   } // end getAvg
    
    valueChanged(i:number,book:Object,value: any) {
         console.log('Selection Changed: ' + value);

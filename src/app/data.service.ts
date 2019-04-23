@@ -17,7 +17,7 @@ export class DataService {
 constructor(private http: HttpClient) { }
 
   
-  login_getFav(username:string,password:string, choice:number) //1:login 2:get Fav //3:add user //4:confirm user
+  login_getFav(username:string,password:string, choice:number) //1:login 2:get Fav //3:add user //4:confirm user 
   {
     
      const urlLogin = 'https://cors-anywhere.herokuapp.com/https://cycbookmongo.herokuapp.com/login';
@@ -59,6 +59,7 @@ constructor(private http: HttpClient) { }
         catchError(this.handleError)
        );
 		   }
+		   
 	  return this.http.get(urlc,{headers:httpOptions}).pipe(
        retry(1),
        catchError(this.handleError)
@@ -66,7 +67,7 @@ constructor(private http: HttpClient) { }
 	
 	} // end login_getFav
 
-addFav(username:string, password:string,i:number,book:Object,choice:number) //1:add Fav, 2:edit 3:del, 4:rate star
+addFav(username:string, password:string,i:number,book:Object,choice:number) //1:add Fav, 2:edit 3:del, 4:rate star 5:get Avg star
 {   
       var Fav = 'https://cors-anywhere.herokuapp.com/https://cycbookmongo.herokuapp.com/favourites';
 	 let authorizationData = 'Basic '+  btoa(`${username}:${password}`);
@@ -109,23 +110,39 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 			   'authors':`${book[i].authors}`,
 			   'description':`${book[i].description}`,
 			   'review':`${book[i].review}`,
-	         },{headers:httpOptions})
+	         },{headers:httpOptions}).pipe(
+       retry(1),
+       catchError(this.handleError)
+     );
 	 }
 	if (choice==3) //del Fav
 	  {Fav=Fav +`/${book[i].favlist[0]._id}`
 	   console.log('delfav '+ Fav)
-	   return this.http.delete(Fav,{headers:httpOptions})
+	   return this.http.delete(Fav,{headers:httpOptions}).pipe(
+       retry(1),
+       catchError(this.handleError)
+     );
 	   }
-     if (choice==4) //edit Fav
+     if (choice==4) //rate star
 	 {Fav=Fav +`/${book[i].favlist[0]._id}`
 	 console.log('Fav'+Fav)
 	   return this.http.put(Fav,{            
 			   'title':`${book[i].title}`,
 			   'authors':`${book[i].authors}`,
 			   'description':`${book[i].description}`,
+			   'review':`${book[i].review}`,
 			    'star':`${book[i].star}`
-	         },{headers:httpOptions})
+	         },{headers:httpOptions}).pipe(
+       retry(1),
+       catchError(this.handleError)
+     );
 	 }
+	 if (choice==5) //get avg star
+	 {Fav=Fav +`/${book[i].favlist[0].title}`
+	 console.log('Fav'+Fav)
+	   return this.http.get(Fav,{headers:httpOptions})
+	 }
+	 
   }// end addFav
 
  getBooks(word:string) {
