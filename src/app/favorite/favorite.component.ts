@@ -15,13 +15,13 @@ import { MySessionService} from '../session-storage.service';
 <p ><textarea #comment 
 (keyup.enter)="editFavHandler(i,books.favourites,comment.value)"
 rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle"  (click)="editFavHandler(i,books.favourites,comment.value)">Add or Edit Review</button></p>
-<p><strong>Your rating:  </strong>( {{  book.favlist[0].star}} ) <strong>  Rate this book  </strong><select (change)="valueChanged(i,books.favourites,$event.target.value)">
+<p><strong>Your rating:  </strong>[ {{  book.favlist[0].star}} ] <strong>  Rate this book  </strong><select (change)="valueChanged(i,books.favourites,$event.target.value)">
   <option value=1>1</option>
   <option value=2>2</option>
   <option value=3>3</option>
   <option value=4>4</option>
   <option value=5>5</option>
-</select> <strong> Avg rating from all readers:</strong> </p> 
+</select> </p><p *ngIf=msg[i]><strong> Avg rating from all readers:</strong>  {{msg[i] }} </p><hr>
 </li>
 </ul>
   
@@ -30,10 +30,10 @@ rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle
 
     
 
-	
+	 
 	
 export class FavoriteComponent implements OnInit {
-books:Object; msg=[]; count =0;
+books:Object; msg=[]; count =0; 
 
 clickMessage = '';
   constructor(private data: DataService,  private session: MySessionService) { }
@@ -109,20 +109,35 @@ clickMessage = '';
    }
    
    getAvg(i:number,book:Object)
-   {if(this.session.getItem("username")!=undefined&& this.count<=book[i].length())
+   {if(this.session.getItem("username")!=undefined&& this.count<=Object.keys(book).length-1)
 	{let a=this.session.getItem("username")
 	 let b=this.session.getItem("password")
 	this.count=this.count+1
-   this.data.addFav(`${a}`,`${b}`, i, book,5).subscribe(data=>{
-		if(data!=undefined) {this.msg[i]=data;
-		console.log('message '+this.msg[i])}
-		//this.clickMessage = 'Rate received! Thank you';
-		//window.alert( this.clickMessage)
+	console.log('count '+ this.count)
+    this.data.addFav(`${a}`,`${b}`, i, book,5).subscribe(data=>{
+		if(data!=undefined) {this.msg[i]=JSON.stringify(data)
+		console.log('message '+this.msg[i])
+		var o = data; //extract data from object
+		var val = o["result"]; 
+
+		console.log('val '+JSON.stringify(val))
+	
+		var val2 = val.map(a => a.avg);		//extract data from array object		
+	    if (val2[0]===null)
+		  this.msg[i] =0
+	    else
+		   this.msg[i] =val2[0].toFixed(1);
+	
+		
+		} 
 		
   
 
 	
-	})}
+	})
+	
+   }
+	
   else {
         // this.clickMessage = `Need to login first!  Book with title: ${book[i].favlist[0].title} is pressed!`;
         // window.alert( this.clickMessage)
