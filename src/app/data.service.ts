@@ -106,10 +106,10 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 	 {Fav=Fav +`/${book[i].favlist[0]._id}`
 	 console.log('Fav'+Fav)
 	   return this.http.put(Fav,{            
-			   'title':`${book[i].title}`,
-			   'authors':`${book[i].authors}`,
-			   'description':`${book[i].description}`,
-			   'review':`${book[i].review}`,
+			   'title':`${book[i].favlist[0].title}`,
+			   'authors':`${book[i].favlist[0].authors}`,
+			   'description':`${book[i].favlist[0].description}`,
+			   'review':`${book[i].favlist[0].review}`,
 	         },{headers:httpOptions}).pipe(
        retry(1),
        catchError(this.handleError)
@@ -127,11 +127,11 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 	 {Fav=Fav +`/${book[i].favlist[0]._id}`
 	 console.log('Fav'+Fav)
 	   return this.http.put(Fav,{            
-			   'title':`${book[i].title}`,
-			   'authors':`${book[i].authors}`,
-			   'description':`${book[i].description}`,
-			   'review':`${book[i].review}`,
-			    'star':`${book[i].star}`
+			   'title':`${book[i].favlist[0].title}`,
+			   'authors':`${book[i].favlist[0].authors}`,
+			   'description':`${book[i].favlist[0].description}`,
+			   'review':`${book[i].favlist[0].review}`,
+			    'star':`${book[i].favlist[0].star}`
 	         },{headers:httpOptions}).pipe(
        retry(1),
        catchError(this.handleError)
@@ -139,8 +139,11 @@ addFav(username:string, password:string,i:number,book:Object,choice:number) //1:
 	 }
 	 if (choice==5) //get avg star
 	 {Fav=Fav +`/${book[i].favlist[0].title}`
-	 console.log('Fav'+Fav)
-	   return this.http.get(Fav,{headers:httpOptions})
+	 console.log('Fav '+Fav)
+	   return this.http.get(Fav,{headers:httpOptions}).pipe(
+       retry(1),
+       catchError(this.handleError)
+     );
 	 }
 	 
   }// end addFav

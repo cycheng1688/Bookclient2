@@ -9,7 +9,7 @@ import { MySessionService} from '../session-storage.service';
 <ul *ngIf="books"><p></p>
 <li *ngFor="let book of books.favourites; index as i">
 
-<h3>Title: {{ book.favlist[0].title }}  <button (click)="delFavHandler(i,books.favourites)">  Delete</button></h3>
+<h3>Title: {{ book.favlist[0].title }} {{getAvg(i, books.favourites)}} <button (click)="delFavHandler(i,books.favourites)">  Delete</button></h3>
 <h4>Authors: {{book.favlist[0].authors[0] }}</h4>
 <p><strong>Description:</strong> {{ book.favlist[0].description}} </p>
 <p ><textarea #comment 
@@ -21,7 +21,7 @@ rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle
   <option value=3>3</option>
   <option value=4>4</option>
   <option value=5>5</option>
-</select> <strong> Avg rating from all readers:</strong> {{getAvg(i,books.favourites)}}</p> 
+</select> <strong> Avg rating from all readers:</strong> </p> 
 </li>
 </ul>
   
@@ -33,7 +33,7 @@ rows="4" cols="60"> {{book.favlist[0].review}}</textarea> <button align ="middle
 	
 	
 export class FavoriteComponent implements OnInit {
-books:Object;
+books:Object; msg=[]; count =0;
 
 clickMessage = '';
   constructor(private data: DataService,  private session: MySessionService) { }
@@ -93,7 +93,7 @@ clickMessage = '';
 	 let id =i
 	 let bookfav=book
 	  
-	  bookfav[i].review = receivedTxt
+	  bookfav[id].favlist[0].review = receivedTxt
 	// console.log('received txt '+receivedTxt)
 	
 	 this.data.addFav(`${a}`,`${b}`, id, bookfav,2).subscribe(data=>{
@@ -109,17 +109,17 @@ clickMessage = '';
    }
    
    getAvg(i:number,book:Object)
-   {if(this.session.getItem("username")!=undefined)
+   {if(this.session.getItem("username")!=undefined&& this.count<=book[i].length())
 	{let a=this.session.getItem("username")
 	 let b=this.session.getItem("password")
-	 let id =i
-	 let bookfav=book
-	 console.log('i m in getAvg')
-   this.data.addFav(`${a}`,`${b}`, id, bookfav,5).subscribe(data=>{
+	this.count=this.count+1
+   this.data.addFav(`${a}`,`${b}`, i, book,5).subscribe(data=>{
+		if(data!=undefined) {this.msg[i]=data;
+		console.log('message '+this.msg[i])}
 		//this.clickMessage = 'Rate received! Thank you';
 		//window.alert( this.clickMessage)
-		//this.ngOnInit()
-   console.log(data)
+		
+  
 
 	
 	})}
@@ -139,7 +139,7 @@ clickMessage = '';
 	 let id =i
 	 let bookfav=book
 	  
-	  bookfav[i].star = value
+	  bookfav[i].favlist[0].star = value
 	// console.log('received txt '+receivedTxt)
 	
 	 this.data.addFav(`${a}`,`${b}`, id, bookfav,4).subscribe(data=>{
