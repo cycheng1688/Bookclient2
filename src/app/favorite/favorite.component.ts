@@ -153,7 +153,8 @@ clickMessage = '';
 	 let b=this.session.getItem("password")
 	 let id =i
 	 let bookfav=book
-	  
+	  if(bookfav[i].favlist[0].review===undefined)
+             bookfav[i].favlist[0].review = " "	  
 	  bookfav[i].favlist[0].star = value
 	// console.log('received txt '+receivedTxt)
 	
